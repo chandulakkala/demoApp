@@ -1,0 +1,33 @@
+apiVersion: apps/v1 # Kubernetes API version
+kind: Deployment  # Kubernetes resource kind we are creating
+metadata:
+  name: rental-app-deployment
+spec:
+  selector:
+    matchLabels:
+      app: rental-app
+  replicas: 1 # Number of replicas that will be created for this deployment
+  template:
+    metadata:
+      labels:
+        app: rental-app
+    spec:
+      containers:
+      - name: rental-app
+        image:  chandu0595/demoapp # Image that will be used to containers in the cluster
+        ports:
+        - containerPort: 80 # The port that the container is running on in the cluster
+---
+
+kind: Service  # Kubernetes API version
+apiVersion: v1 # Kubernetes resource kind we are creating
+metadata:
+  name: rental-app-service
+spec:
+  selector:
+    app: rental-app
+  ports:
+  - protocol: TCP
+    port: 80   # The port that the service is running on in the cluster
+    targetPort: 80   # The port exposed by the service
+  type: LoadBalancer     # type of the service.
